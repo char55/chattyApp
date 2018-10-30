@@ -5,13 +5,12 @@ class MessagesList extends Component {
   render() {
     const data = this.props.data
     const allMessages = data.map((singleMessage) =>
-        <Messages key={singleMessage.id} singleMessage={singleMessage}/>
+        <Messages key={singleMessage.id} user={singleMessage.username} content={singleMessage.content}/>
       );
 
     return(
       <main>
         {allMessages}
-      {/*for loop for messages*/}
       </main>
       )
   }

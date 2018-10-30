@@ -30,6 +30,11 @@ class App extends Component {
     }
   }
 
+  increment() {
+    let current = this.state.messages[this.state.messages.length-1].id;
+    return current+1;
+  }
+
   navBar() {
     return (
       <nav className="navbar">
@@ -39,7 +44,7 @@ class App extends Component {
   }
 
   addMessage = (content) => {
-    const newMessage = {id: 9, username: this.state.currentUser, content: content};
+    const newMessage = {id: this.increment(), username: this.state.currentUser, content: content};
     const messages = this.state.messages.concat(newMessage)
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
