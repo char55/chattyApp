@@ -3,19 +3,8 @@ import MessagesList from './MessageList.jsx'
 import ChatBar from './ChatBar.jsx'
 
 const dummyData = {
-  currentUser: {name: "Char"}, // optional. if currentUser is not defined, it means the user is Anonymous
-  messages: [
-    {
-      id: 1,
-      username: "Bob",
-      content: "Has anyone seen my marbles?",
-    },
-    {
-      id: 2,
-      username: "Anonymous",
-      content: "No, I think you lost them. You lost your marbles Bob. You lost them for good."
-    }
-  ]
+  currentUser: 'Char', // optional. if currentUser is not defined, it means the user is Anonymous
+  messages: []
 }
 
 const uuidv4 = require('uuid/v4')
@@ -27,8 +16,11 @@ class App extends Component {
     this.state = {
       currentUser : dummyData.currentUser.name,
       messages : dummyData.messages
-    }
-    this.socket = new WebSocket('ws://localhost:3001')
+    };
+    const ip_LH = '10.110.111.116';
+    this.socket = new WebSocket(`ws://${ip_LH}:3001`);
+    this.addMessage = this.addMessage.bind(this);
+    this.newUser = this.newUser.bind(this);
   }
 
   navBar() {
@@ -39,32 +31,75 @@ class App extends Component {
       )
   }
 
-  addMessage = (content) => {
-    const newMessage = {id: uuidv4(), username: this.state.currentUser, content: content};
+  newUser(user) {
+    if (user !== this.state.currentUser) {
+      const nameNotification = `User ${this.state.currentUser} has changed name to ${user}`;
+      this.setState({currentUser: user})
+      this.socket.send(JSON.stringify({
+        id: uuidv4(),
+        type: 'postNotification',
+        content: nameNotification
+      }))
+    } else {
+      // same name no change needed
+    }
+  }
+
+  addMessage(user, content) {
+
+    if ( this.state.currentUser !== user) {
+      if (user === undefined) {
+        user = 'Anonymous';
+        this.setState({currentUser: 'Anonymous'})
+      } else {
+        this.newUser(user)
+        this.setState({currentUser: user});
+      }
+    }
+
+    const newMessage = {
+      id: uuidv4(),
+      username: user,
+      content: content,
+      type: 'postMessage'
+    };
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
 
     this.socket.send(JSON.stringify(newMessage))
-
-    this.socket.onmessage = (ev) => {
-      const messages = this.state.messages.concat(JSON.parse(ev.data))
-      this.setState({messages: messages})
-    }
-
   }
 
   componentDidMount() {
     console.log('Connected to server');
 
+    this.socket.onmessage = (ev) => {
+      const data = JSON.parse(ev.data);
 
+      console.log(data)
+
+      switch(data.type){
+        case 'incomingMessage':
+          const messages = this.state.messages.concat(data)
+          this.setState({messages: messages})
+        break;
+        case 'incomingNotification':
+          const notify = this.state.messages.concat(data)
+          this.setState({messages: notify})
+        break;
+      }
+    }
   }
 
-  render() {
+  render()
+  {
     return (
      <div>
       <this.navBar/>
       <MessagesList data={this.state.messages}/>
-      <ChatBar user={this.state.currentUser} addMessage={this.addMessage}/>
+      <ChatBar
+      user={this.state.currentUser}
+      newUser={this.newUser}
+      addMessage={this.addMessage}/>
       </div>
     );
   }

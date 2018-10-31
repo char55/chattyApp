@@ -20,8 +20,11 @@ const wss = new SocketServer({ server });
 // the ws parameter in the callback.
 wss.on('connection', (client) => {
   console.log('Client connected');
+  //addClient(ws, generateColor());
+  console.log(wss.clients.size)
 
-  // sends message to all clients on server
+
+    // sends message to all clients on server
   client.on('message', broadcastBack);
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
@@ -35,5 +38,19 @@ wss.on('connection', (client) => {
   }
   // passes message to each client on the server
   function broadcastBack(message) {
-    wss.broadcast(message);
+    const returnData = typeMod(message)
+    wss.broadcast(returnData);
+  }
+
+  function typeMod(message) {
+    const mess = JSON.parse(message);
+    switch(mess.type){
+      case 'postMessage':
+        mess.type = 'incomingMessage';
+      break;
+      case 'postNotification':
+        mess.type = 'incomingNotification';
+      break;
+    }
+    return JSON.stringify(mess)
   }
