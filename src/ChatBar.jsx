@@ -5,18 +5,14 @@ class ChatBar extends Component {
   constructor() {
     super();
     this.state = {value  : ''};
-    this.messageHit = this.messageHit.bind(this);
     this.changeInput = this.changeInput.bind(this);
   }
 
-  messageHit(data) {
-    this.props.addMessage(data);
-    this.setState({value: ''})
-  }
 
   changeInput(e) {
     if (e.key === 'Enter') {
-      this.messageHit(e.target.value)
+      this.props.addMessage(e.target.value)
+      this.setState({value: ''})
     } else {
       this.setState({value: e.target.value})
     }
