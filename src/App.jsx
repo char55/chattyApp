@@ -2,10 +2,6 @@ import React, {Component} from 'react';
 import MessagesList from './MessageList.jsx'
 import ChatBar from './ChatBar.jsx'
 
-const dummyData = {
-  currentUser: 'Char', // optional. if currentUser is not defined, it means the user is Anonymous
-  messages: []
-}
 
 const uuidv4 = require('uuid/v4')
 
@@ -14,19 +10,23 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUser : dummyData.currentUser.name,
-      messages : dummyData.messages
+      currentUser : '',
+      messages : [],
+      totalUsers: 0
     };
     const ip_LH = '10.110.111.116';
     this.socket = new WebSocket(`ws://${ip_LH}:3001`);
     this.addMessage = this.addMessage.bind(this);
     this.newUser = this.newUser.bind(this);
+    this.navBar = this.navBar.bind(this);
   }
 
   navBar() {
+    // const ppl = ''+this.state.totalUsers;
     return (
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
+        <span>{this.state.totalUsers} users online</span>
       </nav>
       )
   }
@@ -46,7 +46,6 @@ class App extends Component {
   }
 
   addMessage(user, content) {
-
     if ( this.state.currentUser !== user) {
       if (user === undefined) {
         user = 'Anonymous';
@@ -65,16 +64,15 @@ class App extends Component {
     };
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
-
     this.socket.send(JSON.stringify(newMessage))
   }
 
   componentDidMount() {
     console.log('Connected to server');
+ ;
 
     this.socket.onmessage = (ev) => {
       const data = JSON.parse(ev.data);
-
       console.log(data)
 
       switch(data.type){
@@ -85,6 +83,9 @@ class App extends Component {
         case 'incomingNotification':
           const notify = this.state.messages.concat(data)
           this.setState({messages: notify})
+        break;
+        case 'clientCount':
+          this.setState({totalUsers: data.count});
         break;
       }
     }
