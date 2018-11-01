@@ -4,15 +4,15 @@ import React, {Component} from 'react';
 class Messages extends Component {
   render() {
   let display;
-      const user = this.props.user;
-      const content = this.props.content
+  const colouring = this.props.colour;
+  console.log("Colouring",colouring)
       switch(this.props.type) {
         case 'incomingMessage':
           display = (
               <div>
                 <div className="message">
-                  <span className="message-username">{user}</span>
-                  <span className="message-content">{content}</span>
+                  <span className="message-username"  style={{color:colouring}}>{this.props.user}</span>
+                  <span className="message-content">{this.props.content}</span>
                 </div>
                 <div className="message system">
                 </div>
@@ -23,9 +23,28 @@ class Messages extends Component {
         case 'incomingNotification':
           display = (
             <div className="notification">
-              <span className="notification-content">{content}</span>
+              <span className="notification-content">{this.props.content}</span>
             </div>
             )
+        break;
+
+        case 'incomingImage':
+        const image = this.props.content[1]
+          display = (
+              <div>
+                <div className="message">
+                  <span className="message-username"  style={{color:colouring}}>{this.props.user}</span>
+                  <span className="message-content">
+                  {this.props.content[0]}
+                  <img src={image} alt="from user"/>
+                  {this.props.content[2]}
+                  </span>
+                </div>
+                <div className="message system">
+                </div>
+              </div>
+            )
+
         break;
       }
 
@@ -37,3 +56,6 @@ class Messages extends Component {
 
 
 export default Messages;
+
+
+

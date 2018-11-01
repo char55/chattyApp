@@ -12,7 +12,8 @@ class App extends Component {
     this.state = {
       currentUser : '',
       messages : [],
-      totalUsers: 0
+      totalUsers: 0,
+      id: uuidv4()
     };
     const ip_LH = '10.110.111.116';
     this.socket = new WebSocket(`ws://${ip_LH}:3001`);
@@ -22,7 +23,6 @@ class App extends Component {
   }
 
   navBar() {
-    // const ppl = ''+this.state.totalUsers;
     return (
       <nav className="navbar">
         <a href="/" className="navbar-brand">Chatty</a>
@@ -60,7 +60,9 @@ class App extends Component {
       id: uuidv4(),
       username: user,
       content: content,
-      type: 'postMessage'
+      type: 'postMessage',
+      colour: '#000000',
+      userID: this.state.id,
     };
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.
@@ -79,6 +81,10 @@ class App extends Component {
         case 'incomingMessage':
           const messages = this.state.messages.concat(data)
           this.setState({messages: messages})
+        break;
+        case 'incomingImage':
+          const image = this.state.messages.concat(data)
+          this.setState({messages: image})
         break;
         case 'incomingNotification':
           const notify = this.state.messages.concat(data)

@@ -18,12 +18,24 @@ const wss = new SocketServer({ server });
 // Set up a callback that will run when a client connects to the server
 // When a client connects they are assigned a socket, represented by
 // the ws parameter in the callback.
+const uuidv4 = require('uuid/v4')
+
+const  clientsOnline = [];
+
+colourOptions = ['#065186', '#0E861C', '#933C90', '97520D' ]
+
+function randomColorGenerator() {
+  const code = "1234567890ABCDEF";
+  let colourPick = "#"
+  for (let i = 0; i < 6; i++) {
+    colourPick += code[Math.floor(Math.random()*16)]
+  }
+  return colourPick;
+}
 
 
 wss.on('connection', (client) => {
   console.log('Client connected');
-  //addClient(ws, generateColor());
-
 
   const clientCount = {
     type: 'clientCount',
@@ -31,7 +43,9 @@ wss.on('connection', (client) => {
   }
 
   wss.clients.forEach(function(eachClient) {
-    eachClient.send(JSON.stringify(clientCount))
+    eachClient.send(JSON.stringify(clientCount));
+    // const clientColour = checkClient(eachClient);
+
   })
 
     // sends message to all clients on server
@@ -49,29 +63,80 @@ wss.on('connection', (client) => {
 });
 
 
-  wss.broadcast = function(data) {
-    wss.clients.forEach(function(eachClient) {
-      eachClient.send(data)
-    })
-  }
-  // passes message to each client on the server
-  function broadcastBack(message) {
-    const returnData = typeMod(message)
-    wss.broadcast(returnData);
-  }
+wss.broadcast = function(data) {
+  wss.clients.forEach(function(eachClient) {
+    eachClient.send(data)
+  })
+}
+// passes message to each client on the server
+function broadcastBack(message) {
+  const returnData = typeMod(message)
+  wss.broadcast(returnData);
+}
 
-  function typeMod(message) {
-    const mess = JSON.parse(message);
-    if(!mess.type) {
-      mess = clientCount
-    }
-    switch(mess.type){
-      case 'postMessage':
-        mess.type = 'incomingMessage';
-      break;
-      case 'postNotification':
-        mess.type = 'incomingNotification';
-      break;
-    }
-    return JSON.stringify(mess)
+function typeMod(message) {
+  let mess = JSON.parse(message);
+  if(!mess.type) {
+    mess = clientCount
   }
+  switch(mess.type){
+    case 'postMessage':
+      mess.type = 'incomingMessage';
+      if( mess.content.includes("jpg") || mess.content.includes("png") || mess.content.includes("gif")) {
+        mess = imageType(mess)
+      }
+    break;
+    case 'postNotification':
+      mess.type = 'incomingNotification';
+    break;
+    case 'postImage':
+      mess.type = 'incomingImage';
+    break;
+  }
+  mess = checkClient(mess)
+  return JSON.stringify(mess)
+}
+
+
+function checkClient(mess) {
+  let numb = clientsOnline.findIndex((eachClient) => eachClient.id===mess.userID)
+  if (numb < 0) {
+    // client doesn't exist yet
+    addClient(mess)
+    numb = clientsOnline.findIndex((eachClient) => eachClient.id===mess.userID)
+  }
+  mess.colour = clientsOnline[numb].colour;
+  return mess
+}
+
+function addClient(mess) {
+  clientsOnline.push({
+    id: mess.userID,
+    colour: randomColorGenerator()
+  })
+}
+
+function imageType(mess) {
+  mess.type = 'incomingImage'
+    let preStr = "";
+    let image = "";
+    let poststr = "";
+    let imageStart = mess.content.indexOf('http')
+    let imageEnd = 0;
+
+  if( mess.content.includes("jpg") ) {
+    imageEnd = mess.content.indexOf('jpg')+3
+  } else  if( mess.content.includes("png") ) {
+    imageEnd = mess.content.indexOf('png')+3
+  } else  if( mess.content.includes("gif") ) {
+    imageEnd = mess.content.indexOf('gif')+3
+  }
+    preStr = mess.content.substr(0,imageStart-1)
+    image = mess.content.substr(imageStart, imageEnd)
+    poststr = mess.content.substr(imageEnd+1)
+
+  mess.content = [preStr, image, poststr]
+    // varies dep on # of images???? recursive
+  return mess;
+
+}
