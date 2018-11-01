@@ -138,7 +138,5 @@ function imageType(mess) {
   mess.content = [preStr, image, poststr];
     // ASSUMES no more than one image per mess
     // varies dep on # of images???? recursive
-    // SIZE OF IMAGE
-    //Ensure images cannot be larger than 60% of the width of the page (resize images on the fly accordingly
   return mess;
 }

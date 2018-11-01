@@ -10,6 +10,8 @@ class MessagesList extends Component {
         user={singleMessage.username}
         content={singleMessage.content}
         colour={singleMessage.colour}
+        currentID={this.props.currentID}
+        messageID={singleMessage.userID}
         />
       );
 

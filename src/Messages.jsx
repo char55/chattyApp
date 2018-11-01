@@ -3,15 +3,22 @@ import React, {Component} from 'react';
 
 class Messages extends Component {
   render() {
-  let display;
-  const colouring = this.props.colour;
+    let bubble;
+    let display;
+    const userColor = this.props.colour;
+    console.log("Current",this.props.currentID,"\nmessage",this.props.messageID)
+    if(this.props.currentID === this.props.messageID) {
+      bubble = '#488EDA'; // if user typed it
+    } else {
+      bubble = '#D986CF' // if others wrote it
+    }
       switch(this.props.type) {
         case 'incomingMessage':
           display = (
               <div>
                 <div className="message">
-                  <span className="message-username"  style={{color:colouring}}>{this.props.user}</span>
-                  <span className="message-content">{this.props.content}</span>
+                  <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
+                  <span className="message-content" style={{backgroundColor:bubble}}>{this.props.content}</span>
                 </div>
                 <div className="message system">
                 </div>
@@ -33,12 +40,12 @@ class Messages extends Component {
           display = (
               <div>
                 <div className="message">
-                  <span className="message-username"  style={{color:colouring}}>{this.props.user}</span>
-                  <span className="message-content">
+                  <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
+                  <span className="message-content" style={{backgroundColor:bubble}}>
                   <p>
                   {this.props.content[0]}
                   </p><p>
-                  <img src={image} width="50%" alt="from user"/>
+                  <img src={image} width="60%" alt="from user"/>
                   </p><p>
                   {this.props.content[2]}
                   </p>

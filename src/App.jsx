@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import MessagesList from './MessageList.jsx'
 import ChatBar from './ChatBar.jsx'
-
-
 const uuidv4 = require('uuid/v4')
 
 class App extends Component {
@@ -72,7 +70,6 @@ class App extends Component {
 
   componentDidMount() {
     console.log('Connected to server');
- ;
 
     this.socket.onmessage = (ev) => {
       const data = JSON.parse(ev.data);
@@ -96,6 +93,7 @@ class App extends Component {
         break;
       }
     }
+    this.scrollToBottom();
   }
 
   render()
@@ -103,7 +101,7 @@ class App extends Component {
     return (
      <div>
       <this.navBar/>
-      <MessagesList data={this.state.messages}/>
+      <MessagesList data={this.state.messages} currentID={this.state.id}/>
       <ChatBar
       user={this.state.currentUser}
       newUser={this.newUser}
