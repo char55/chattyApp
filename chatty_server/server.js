@@ -121,22 +121,24 @@ function imageType(mess) {
     let preStr = "";
     let image = "";
     let poststr = "";
-    let imageStart = mess.content.indexOf('http')
+    let imageStart = mess.content.indexOf('http');
     let imageEnd = 0;
 
   if( mess.content.includes("jpg") ) {
-    imageEnd = mess.content.indexOf('jpg')+3
+    imageEnd = mess.content.indexOf('jpg')+3;
   } else  if( mess.content.includes("png") ) {
-    imageEnd = mess.content.indexOf('png')+3
+    imageEnd = mess.content.indexOf('png')+3;
   } else  if( mess.content.includes("gif") ) {
-    imageEnd = mess.content.indexOf('gif')+3
+    imageEnd = mess.content.indexOf('gif')+3;
   }
-    preStr = mess.content.substr(0,imageStart-1)
-    image = mess.content.substr(imageStart, imageEnd)
-    poststr = mess.content.substr(imageEnd+1)
-
-  mess.content = [preStr, image, poststr]
+  preStr = mess.content.substring(0,imageStart);
+  // preStr = preStr + '\n';
+  image = mess.content.substring(imageStart, imageEnd);
+  poststr = mess.content.substring(imageEnd);
+  mess.content = [preStr, image, poststr];
+    // ASSUMES no more than one image per mess
     // varies dep on # of images???? recursive
+    // SIZE OF IMAGE
+    //Ensure images cannot be larger than 60% of the width of the page (resize images on the fly accordingly
   return mess;
-
 }

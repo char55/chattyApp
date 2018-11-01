@@ -63,6 +63,7 @@ class App extends Component {
       type: 'postMessage',
       colour: '#000000',
       userID: this.state.id,
+      timeStamp: Date()
     };
     // Update the state of the app component.
     // Calling setState will trigger a call to render() in App and all child components.

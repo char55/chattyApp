@@ -5,7 +5,6 @@ class Messages extends Component {
   render() {
   let display;
   const colouring = this.props.colour;
-  console.log("Colouring",colouring)
       switch(this.props.type) {
         case 'incomingMessage':
           display = (
@@ -30,14 +29,19 @@ class Messages extends Component {
 
         case 'incomingImage':
         const image = this.props.content[1]
+  console.log("IMG",image)
           display = (
               <div>
                 <div className="message">
                   <span className="message-username"  style={{color:colouring}}>{this.props.user}</span>
                   <span className="message-content">
+                  <p>
                   {this.props.content[0]}
-                  <img src={image} alt="from user"/>
+                  </p><p>
+                  <img src={image} width="50%" alt="from user"/>
+                  </p><p>
                   {this.props.content[2]}
+                  </p>
                   </span>
                 </div>
                 <div className="message system">
