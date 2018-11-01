@@ -54,9 +54,12 @@ class Messages extends Component {
                   </p>
                   </span>
                 </div>
-                <div className="message system">
+                <div className="message system"
+                   ref={(el) => { this.messagesEnd = el; }}
+                   >
                 </div>
               </div>
+
             )
 
         break;

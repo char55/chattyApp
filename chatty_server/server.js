@@ -36,32 +36,29 @@ function randomColorGenerator() {
 
 wss.on('connection', (client) => {
   console.log('Client connected');
+  sendCount()
 
-  const clientCount = {
-    type: 'clientCount',
-    count: wss.clients.size
-  }
-
-  wss.clients.forEach(function(eachClient) {
-    eachClient.send(JSON.stringify(clientCount));
-    // const clientColour = checkClient(eachClient);
-
-  })
-
-    // sends message to all clients on server
+  // sends message to all clients on server
   client.on('message', broadcastBack);
 
   // Set up a callback for when a client closes the socket. This usually means they closed their browser.
   client.on('close', () => {
+    sendCount()
     console.log('Client disconnected')
-    wss.clients.forEach(function(eachClient) {
-      eachClient.send(JSON.stringify(clientCount))
-    })
   }
     );
 
 });
 
+function sendCount() {
+  const clientCount = {
+    type: 'clientCount',
+    count: wss.clients.size
+  }
+  wss.clients.forEach(function(eachClient) {
+    eachClient.send(JSON.stringify(clientCount));
+  })
+}
 
 wss.broadcast = function(data) {
   wss.clients.forEach(function(eachClient) {
@@ -102,18 +99,14 @@ function checkClient(mess) {
   let numb = clientsOnline.findIndex((eachClient) => eachClient.id===mess.userID)
   if (numb < 0) {
     // client doesn't exist yet
-    addClient(mess)
+    clientsOnline.push({
+      id: mess.userID,
+      colour: randomColorGenerator()
+    })
     numb = clientsOnline.findIndex((eachClient) => eachClient.id===mess.userID)
   }
   mess.colour = clientsOnline[numb].colour;
   return mess
-}
-
-function addClient(mess) {
-  clientsOnline.push({
-    id: mess.userID,
-    colour: randomColorGenerator()
-  })
 }
 
 function imageType(mess) {

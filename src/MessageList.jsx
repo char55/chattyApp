@@ -18,6 +18,7 @@ class MessagesList extends Component {
     return(
       <main>
         {allMessages}
+
       </main>
       )
   }

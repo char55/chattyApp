@@ -29,6 +29,10 @@ class App extends Component {
       )
   }
 
+  scrollToBottom = () => {
+    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+  }
+
   newUser(user) {
     if (user !== this.state.currentUser) {
       const nameNotification = `User ${this.state.currentUser} has changed name to ${user}`;
@@ -96,12 +100,19 @@ class App extends Component {
     this.scrollToBottom();
   }
 
+componentDidUpdate() {
+  this.scrollToBottom();
+}
+
   render()
   {
     return (
      <div>
       <this.navBar/>
       <MessagesList data={this.state.messages} currentID={this.state.id}/>
+      <div  className="message system"
+         ref={(el) => { this.messagesEnd = el; }}
+       ></div>
       <ChatBar
       user={this.state.currentUser}
       newUser={this.newUser}
