@@ -23,7 +23,11 @@ class App extends Component {
   navBar() {
     return (
       <nav className="navbar">
-        <a href="/" className="navbar-brand">Chatty</a>
+        <a href="/" className="navbar-brand">
+         <img src="http://localhost:3000/build/chat_bubble.png" width="4%" alt="chatIcon"/>
+         Chats-a-lot
+        </a>
+
         <span>{this.state.totalUsers} users online</span>
       </nav>
       )

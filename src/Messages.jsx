@@ -9,21 +9,26 @@ class Messages extends Component {
     const userColor = this.props.colour;
     if(this.props.currentID === this.props.messageID) {
       bubble = '#488EDA'; // if user typed it
-      side = 'block'
+      side = 'flex';
     } else {
       bubble = '#D986CF' // if others wrote it
-      side = 'flex'
+      side = 'block';
     }
-    console.log(side)
+
       switch(this.props.type) {
         case 'incomingMessage':
           display = (
               <div style={{display:side}} >
+                <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
                 <div className="message">
-                  <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
-                  <span className="message-content" style={{backgroundColor:bubble}}>{this.props.content}</span>
-                </div>
+                  <span className="message-content" style={{backgroundColor:bubble}}>{this.props.content}
+
                 <div className="message system">
+                  {this.props.messageDate}
+                </div>
+
+                  </span>
+
                 </div>
               </div>
             )
@@ -39,11 +44,10 @@ class Messages extends Component {
 
         case 'incomingImage':
         const image = this.props.content[1]
-  console.log("IMG",image)
           display = (
               <div style={{display:side}} >
+                <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
                 <div className="message">
-                  <span className="message-username"  style={{color:userColor}}>{this.props.user}</span>
                   <span className="message-content" style={{backgroundColor:bubble}}>
                   <p>
                   {this.props.content[0]}
@@ -52,17 +56,19 @@ class Messages extends Component {
                   </p><p>
                   {this.props.content[2]}
                   </p>
-                  </span>
+                <div className="message system">
+                {this.props.messageDate}
                 </div>
-                <div className="message system"
-                   ref={(el) => { this.messagesEnd = el; }}
-                   >
+                  </span>
                 </div>
               </div>
 
             )
 
         break;
+        default:
+          display = <div> ERROR </div>
+
       }
 
     return (

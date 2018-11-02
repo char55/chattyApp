@@ -12,6 +12,7 @@ class MessagesList extends Component {
         colour={singleMessage.colour}
         currentID={this.props.currentID}
         messageID={singleMessage.userID}
+        messageDate={singleMessage.timeStamp}
         />
       );
 
