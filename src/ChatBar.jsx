@@ -15,15 +15,19 @@ class ChatBar extends Component {
   inputUser(e) {
     this.setState({inputUser: e.target.value})
     if(e.key === 'Enter') {
-      this.props.newUser(e.target.value)
+      if(e.target.value.trim() != '' ) {
+        this.props.newUser(e.target.value)
+      }
     }
   }
 
   changeInput(e) {
     if (e.key === 'Enter') {
       // console.log(this.state.inputUser)
-      this.props.addMessage(this.state.inputUser, e.target.value)
-      this.setState({content: ''})
+      if(e.target.value.trim() != '' ) {
+        this.props.addMessage(this.state.inputUser, e.target.value)
+        this.setState({content: ''})
+      }
     } else {
       this.setState({content: e.target.value})
     }

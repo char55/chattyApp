@@ -1,5 +1,4 @@
 // server.js
-
 const express = require('express');
 const SocketServer = require('ws').Server;
 
@@ -14,24 +13,8 @@ const server = express()
 
 // Create the WebSockets server
 const wss = new SocketServer({ server });
-
-// Set up a callback that will run when a client connects to the server
-// When a client connects they are assigned a socket, represented by
-// the ws parameter in the callback.
 const uuidv4 = require('uuid/v4')
-
 const  clientsOnline = [];
-
-colourOptions = ['#065186', '#0E861C', '#933C90', '97520D' ]
-
-function randomColorGenerator() {
-  const code = "1234567890ABCDEF";
-  let colourPick = "#"
-  for (let i = 0; i < 6; i++) {
-    colourPick += code[Math.floor(Math.random()*16)]
-  }
-  return colourPick;
-}
 
 
 wss.on('connection', (client) => {
@@ -65,7 +48,7 @@ wss.broadcast = function(data) {
     eachClient.send(data)
   })
 }
-// passes message to each client on the server
+
 function broadcastBack(message) {
   const returnData = typeMod(message)
   wss.broadcast(returnData);
@@ -94,7 +77,6 @@ function typeMod(message) {
   return JSON.stringify(mess)
 }
 
-
 function checkClient(mess) {
   let numb = clientsOnline.findIndex((eachClient) => eachClient.id===mess.userID)
   if (numb < 0) {
@@ -107,6 +89,15 @@ function checkClient(mess) {
   }
   mess.colour = clientsOnline[numb].colour;
   return mess
+}
+
+function randomColorGenerator() {
+  const code = "1234567890ABCDEF";
+  let colourPick = "#"
+  for (let i = 0; i < 6; i++) {
+    colourPick += code[Math.floor(Math.random()*16)]
+  }
+  return colourPick;
 }
 
 function imageType(mess) {

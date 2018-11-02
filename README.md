@@ -1,41 +1,36 @@
-React Boilerplate
+Chatty App
 =====================
 
-A minimal and light dev environment for ReactJS.
+ChattyApp enables users from various locations to chat together, on one server, with picture/gif sharing capabilities.
+Client-side single page app built with ReactJS
+
+## Demo
+
+![alt](url)
 
 ### Usage
 
-Clone the boilerplate and create your own git repo.
+# Set-Up
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+* Clone this repo
+* install the dependencies for ChattyApp
+* to go the ```chatty_server``` folder and install dependencies for the server
+  - chatty_server will be hosting the ChattyApp
 
-Install the dependencies and start the server.
+For ChattyApp to properly reference the chatty_server, you must adjust the 'IP_HOST'
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+# Changing the host
 
-### Static Files
+In ChattyApp
+      -> src -> App.jsx
+          go to line 16 and change the value of ```IP_HOST ``` to your current IP
 
-You can store static files like images, fonts, etc in the `build` folder.
-
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
+# Running the code
+* from chatty_server, run the server
+  ``` node server.js ```
+* as it's running, in a different terminal, go to ChattyApp and start the app up by typing ```npm start```
+ * app will be on local host
+ * app can be shared for chatting using the
 
 ### Dependencies
 
@@ -43,3 +38,27 @@ npm run lint
 * Webpack
 * [babel-loader](https://github.com/babel/babel-loader)
 * [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+* uuid
+
+### Features
+
+* Chat log visible to all connected users
+  * display: text, and images of type: '.png', '.gif', '.jpg'
+  * displays the date and time at which the message was sent
+  * messages sent from the user are coloured blue, those that the user receives are coloured light purple
+  * messages can be sent from input field in the bottom left
+  * blank spaces will not be accepted as a valid messages
+
+* Users are displayed as "Anonymous" unless offer a name
+  * a notification is put in the chat log anytime a user changes their name
+  * each user is given a colour, set as the colour of their username
+    * the colour is randomly assigned
+    * the colour will not alter if the user changes usernames
+  * to change username edit the bottom left input field
+    * username will change when user hits Enter within the username input field
+    * username will change when user hits Enter within the message input field, if there is a new message to send and if the username has been altered
+
+* The total number of connected users is displayed in the top right corner
+  * increases when a connection is made
+  * decreased when a connection is ended
+

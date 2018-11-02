@@ -13,8 +13,8 @@ class App extends Component {
       totalUsers: 0,
       id: uuidv4()
     };
-    const ip_LH = '10.110.111.116';
-    this.socket = new WebSocket(`ws://${ip_LH}:3001`);
+    const IP_HOST = '10.110.111.116';
+    this.socket = new WebSocket(`ws://${IP_HOST}:3001`);
     this.addMessage = this.addMessage.bind(this);
     this.newUser = this.newUser.bind(this);
     this.navBar = this.navBar.bind(this);
@@ -24,11 +24,12 @@ class App extends Component {
     return (
       <nav className="navbar">
         <a href="/" className="navbar-brand">
-         <img src="http://localhost:3000/build/chat_bubble.png" width="4%" alt="chatIcon"/>
+        <i className="fas fa-feather-alt"></i>
          Chats-a-lot
         </a>
-
-        <span>{this.state.totalUsers} users online</span>
+        <span>
+        <i className="far fa-comments"></i>
+         <div>{this.state.totalUsers} users online</div></span>
       </nav>
       )
   }
@@ -77,11 +78,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log('Connected to server');
-
     this.socket.onmessage = (ev) => {
       const data = JSON.parse(ev.data);
-      console.log(data)
 
       switch(data.type){
         case 'incomingMessage':
