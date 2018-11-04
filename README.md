@@ -1,12 +1,18 @@
 Chatty App
 =====================
 
-ChattyApp enables users from various locations to chat together, on one server, with picture/gif sharing capabilities.
-Client-side single page app built with ReactJS
+ChattyApp AKA 'Chats-a-lot' enables users from various locations to chat together, on one server, with picture/gif sharing capabilities.
+It is a client-side single page app built with ReactJS, utilizing babel and webpack.
 
 ## Demo
 
-![alt](url)
+![users can chat and change their name](https://github.com/char55/chattyApp/blob/master/build/users%20can%20chat%20and%20change%20their%20name.png?raw=true)
+
+![users can send pictures](https://github.com/char55/chattyApp/blob/master/build/users%20can%20send%20pictures.png?raw=true)
+
+![users can send gifs with texts together](https://github.com/char55/chattyApp/blob/master/build/users%20can%20send%20gifs%20with%20texts%20together.png?raw=true)
+
+![user count decreases and increases](https://raw.githubusercontent.com/char55/chattyApp/master/build/user%20count%20decreases%20and%20increases.png)
 
 ### Usage
 
