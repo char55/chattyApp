@@ -13,7 +13,7 @@ class App extends Component {
       totalUsers: 0,
       id: uuidv4()
     };
-    const IP_HOST = '10.110.111.116';
+    const IP_HOST = 'localhost';
     this.socket = new WebSocket(`ws://${IP_HOST}:3001`);
     this.addMessage = this.addMessage.bind(this);
     this.newUser = this.newUser.bind(this);
