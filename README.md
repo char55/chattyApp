@@ -12,8 +12,6 @@ It is a client-side single page app built with ReactJS, utilizing babel and webp
 
 ![users can send gifs with texts together](https://github.com/char55/chattyApp/blob/master/build/users%20can%20send%20gifs%20with%20texts%20together.png?raw=true)
 
-![user count decreases and increases](https://raw.githubusercontent.com/char55/chattyApp/master/build/user%20count%20decreases%20and%20increases.png)
-
 ### Usage
 
 # Set-Up
